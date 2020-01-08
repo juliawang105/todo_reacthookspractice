@@ -1,36 +1,9 @@
 import React from 'react';
-import{ useState } from 'react'
-import Todo from './todo'
+import{ useState } from 'react';
+import Todo from './todo';
+import TodoForm from './todo_form'
 import logo from './logo.svg';
 import './App.css';
-
-function TodoForm({addTodo}){
-  const [value, setValue] = useState("");
-
-  // const addTodo = text => {
-  //   const newTodos = [...todos, {text}];
-  //   setTodos(newTodos)
-  // }
-
-  const handleSubmit = e => {
-    e.preventDefault();
-    if(!value) return; //if nothing is in the input box and the user presses "enter"
-    addTodo(value);
-    setValue("");
-  }
-
-  return(
-    <form onSubmit={handleSubmit}>
-      <input 
-        type="text"
-        className="input"
-        value={value}
-        onChange={e => setValue(e.target.value)}
-      />
-
-    </form>
-  )
-};
 
 function App() {
   //todos is what we name our state and setTodos is what we use to set the state 
@@ -41,6 +14,17 @@ function App() {
     { text: "Build really cool todo app", isCompleted: false }
   ]);
 
+  const addTodo = text => {
+    const newTodos = [...todos, { text }];
+    setTodos(newTodos);
+  };
+
+  const completeTodo = index => {
+    const newTodos = [...todos];
+    newTodos[index].isCompleted = true;
+    setTodos(newTodos); //sets the state 
+  }
+
   return (
     <div className="App">
      <div className="todo-list">
@@ -49,9 +33,10 @@ function App() {
           key={index}
           index={index}
           todo={todo}
+          completeTodo={completeTodo}
          />
        ))}
-       <TodoForm />
+       <TodoForm addTodo = {addTodo}/>
      </div>
     </div>
   );
